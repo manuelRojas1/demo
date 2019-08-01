@@ -1,0 +1,98 @@
+<agm-map [panControl]="true" [zoom]=11 [disableDefaultUI]="true" [mapTypeId]="'hybrid'" [latitude]="this.latitudCenter"
+  [mapTypeControl]="true" [longitude]="this.longitudCenter">
+  <agm-polygon *ngFor="let area of (listArea | async)" [paths]="area.paths" (polyClick)="mostrarMensaje(area.id,area.area)"
+    [strokeColor]="area.color" [zIndex]="area.zIndex"></agm-polygon>
+
+  <agm-marker iconUrl="./assets/iconos-IA/{{incidencia.tipoIncidencia.tipo+'.png'}}" [longitude]="incidencia.longitud"
+    [latitude]="incidencia.latitud" *ngFor="let incidencia of (listaIncidencia | async)">
+    <agm-info-window>
+      <strong>incidencia:</strong> {{incidencia.detalle}}
+      <strong>tipo:</strong>{{incidencia.tipoIncidencia.tipo}}
+      <div class="display_flex">
+        <figure class="image is-96x96" *ngFor="let foto of incidencia.urlListOfPhotos">
+          <img [src]="foto.url" [alt]="foto.name" />
+        </figure>
+      </div>
+    </agm-info-window>
+  </agm-marker>
+  <agm-marker iconUrl="./assets/Iconos-ica/{{resultado.riesgo=='Muy Alto'? 'riesgo-alto-ica.png':'incumplimiento-ica.png' }}"
+    [longitude]="resultado.lng" [latitude]="resultado.lat" *ngFor="let resultado of listResultIncumplidoICA | async ">
+    <agm-info-window>
+      <div class="notification is-danger">
+        <div class="position_absolute right top puntero box_shadow border_radius_50 height_24" (click)="setPersona(resultado.persona);toggleModalPersona()">
+          <i class="material-icons">
+            account_circle
+          </i>
+        </div>
+        <strong>Parametro:</strong><span>{{resultado.parametro.nombreCorto}}</span><strong>({{resultado.parametro.resultado}})</strong>
+
+      </div>
+    </agm-info-window>
+  </agm-marker>
+
+</agm-map>
+<!--leyenda-->
+
+
+<div class="legendTest" style="display:none" id="prueba">
+
+</div>
+<div class="legend" id="prueba2">
+    <div  class="position_absolute right top">
+        <button class="boton" #boton  (click)="ocultarLeyendaTogle(boton)">X</button> 
+        
+      
+     <!-- <a class="button is-success is-focused" style=" right: top;"  #boton  (click)="ocultarLeyendaTogle(boton)">X</a> --> 
+    </div>
+    <div id="titulo">
+      <h3>ÁREAS </h3>
+    </div>
+    <ul>
+      <li *ngFor="let areaLeyenda of (listArea | async)" (click)="mostrarMensaje(areaLeyenda.id,areaLeyenda.area)">
+        <i class="material-icons " [ngStyle]="{'color': areaLeyenda.color}">fiber_manual_record</i>
+        {{areaLeyenda.area}}
+      </li>
+    </ul>
+  </div>
+
+<!--Modal para visualizar Persona responsable-->
+<div class="modal " [ngClass]="{ 'is-active':activadModalPersona} ">
+  <div class="modal-background " (click)="toggleModalPersona() "></div>
+  <div class="modal-card ">
+    <header class="modal-card-head ">
+      <p class="modal-card-title ">Persona Responsable</p>
+      <button class="delete " aria-label="close " (click)="toggleModalPersona() "></button>
+    </header>
+    <section class="modal-card-body ">
+      <table class="table  is-fullwidth">
+        <thead>
+          <tr>
+            <th>
+              Nombre Completo
+            </th>
+            <th>
+              Area
+            </th>
+            <th>
+              Cargo
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="this.personaSeleccionada">
+
+            <th class="font_weigh_none">{{personaSeleccionada.nombre}} {{personaSeleccionada.apellidos}} </th>
+            <th class="font_weigh_none">{{personaSeleccionada.area.area}}</th>
+            <th class="font_weigh_none">{{personaSeleccionada.tipoPersona.nombre}}</th>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <footer class="modal-card-foot ">
+      <button class="button " (click)="toggleModalPersona() ">Cancel</button>
+    </footer>
+
+  </div>
+</div>
+<!--Fin del Modal para mostrar el Historial de resultado-->
+<!--Fin de modal visualizar Persona responsable-->

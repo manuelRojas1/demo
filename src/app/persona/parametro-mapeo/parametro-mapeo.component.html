@@ -1,0 +1,127 @@
+<button (click)="nuevoParametro();toggleModalParametro()" class="button is-info">Agregar nuevo Parametro</button>
+<!--Mostrar los parametros registrados -->
+
+<div class="row around-xs">
+  <div class="col-xs-12 col-md-4 margin_25" *ngFor="let parametro of (listaParametros | async);let i=index">
+    <div class="card">
+      <header class="card-header">
+        <div class="card-header-title ">
+          <span class="has-text-dark">
+            {{parametro.nombre }}
+          </span>
+
+
+        </div>
+      </header>
+      <div class="card-content ">
+        <div class="head"> <b><u>Detalle</u></b></div>
+        <div class="descripcion">
+          <ul>
+            <li>
+              <h3> <b>Unidad :</b> {{parametro.unidadMedida}}</h3>
+            </li>
+            <li>
+              <h3><b>Tipo :</b> {{parametro.tipo.nombre}}</h3>
+            </li>
+            <li>
+              <h3><b>Categoria :</b> {{parametro.categoria.nombre}}</h3>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <footer class="card-footer ">
+        <a (click)="setParametro(parametro);editarParametro();toggleModalParametro()" class="card-footer-item "><i
+            class="fas fa-edit">
+          </i></a>
+        <a (click)="setParametro(parametro);eliminarParametro()" class="card-footer-item "><i class="fas fa-trash-alt"
+            style="color:red">
+          </i></a>
+      </footer>
+    </div>
+  </div>
+</div>
+<!--Fin Mostrar parametros registrados-->
+
+<!--Modal para registro de parametros-->
+<div class="modal" [ngClass]="{'is-active':activarFormParametro}">
+  <div class="modal-background" (click)="toggleModalParametro()"></div>
+  <form [formGroup]="formParametro" (submit)="saveAndEditParametro(formParametro.value)">
+    <div class="modal-card">
+
+      <header class="modal-card-head">
+        <p class="modal-card-title">{{accion? 'Registro':'Edicion'}} de Parametros</p>
+        <button class="delete" aria-label="close" (click)="toggleModalParametro()"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <div class="control">
+            <input class="input" formControlName="id" type="hidden">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Nombre: </label>
+          <div class="control">
+            <input class="input" formControlName="nombre" placeholder="nombre del parametro">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Abreviacion:</label>
+          <div class="control">
+            <input class="input" type="text" formControlName="nombreCorto">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">U.Medidad:</label>
+          <div class="control">
+            <input class="input" type="text" formControlName="unidadMedida">
+          </div>
+        </div>
+        <div class="field"><label class="label">Tipo</label></div>
+        <div class="select">
+          <select formControlName="tipo" [compareWith]="compareTipoParametro">
+            <option [ngValue]="{nombre:'LMP',id:'1'}">LMP</option>
+            <option [ngValue]="{nombre:'ECA',id:'2'}">ECA</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="label">Descripcion:</label>
+          <div class="control">
+            <textarea class="textarea" formControlName="descripcion"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Valor maximo: </label>
+          <div class="control">
+            <input class="input" type="number" formControlName="valor_maximo" placeholder="No debe pasar de este valor">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Valor Minimo: </label>
+          <div class="control">
+            <input class="input" type="number" formControlName="valor_minimo">
+          </div>
+        </div>
+        <div class="field"><label class="label">Categoria</label></div>
+        <div class="select">
+          <select formControlName="categoria" [compareWith]="compareTipoParametro">
+            <option [ngValue]="categoria" *ngFor="let categoria of listaCategoria | async">{{categoria.nombre}}</option>
+          </select>
+        </div>
+
+      </section>
+      <footer class="modal-card-foot">
+        <div class="field is-grouped">
+          <div class="control">
+            <button type="submit" [disabled]="!this.formParametro.valid" class="button is-success ">
+              {{accion? 'Guardar':'Editar'}}
+            </button>
+          </div>
+          <div class="control">
+            <button class="button" (click)="toggleModalParametro()">Cancelar</button>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </form>
+</div>
+<!--Fin de modal para registro registros-->

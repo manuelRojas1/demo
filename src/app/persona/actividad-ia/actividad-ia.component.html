@@ -1,0 +1,214 @@
+<block-ui>
+  <div class="row">
+    <div class="col-xs-12 col-md-6 ">
+      <div class="field is-grouped">
+        <p class="control">
+          <a (click)="nuevaIncidencia();resetFormIncidencia();clearPreventView();toggleFormIncidencia()"
+            class="button is-info is-outlined is-rounded">Registrar incidencia</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Modal para registro de incidencias-->
+  <div class="modal " [ngClass]="{ 'is-active':activarFormIncidencia} ">
+    <div class="modal-background " (click)="toggleFormIncidencia() "></div>
+    <div class="modal-card ">
+      <header class="modal-card-head ">
+        <p class="modal-card-title ">{{accion? 'Registro':'Edicion'}} de Incidencia</p>
+        <button class="delete " aria-label="close " (click)="toggleFormIncidencia()"></button>
+      </header>
+      <section class="modal-card-body ">
+        <form [formGroup]="incidenciaForm " (submit)="saveAndEditIncidencia(incidenciaForm.value) ">
+          <div class="field ">
+
+            <label class="label ">Detalle de la Incidencia</label>
+            <div class="control ">
+              <textarea class="textarea " formControlName="detalle" placeholder="Descripcion de lo sucedido "></textarea>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <div class="custom-file-container" data-upload-id="template">
+                <label class="label">Fotos:<a href="javascript:void(0)" class="custom-file-container__image-clear"
+                    title="Clear Image">x</a></label>
+                <label class="custom-file-container__custom-file">
+                  <input type="file" formControlName="files"
+                    class="custom-file-container__custom-file__custom-file-input" accept="image/*" multiple>
+                  <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+                  <span class="custom-file-container__custom-file__custom-file-control"></span>
+                </label>
+                <div class="custom-file-container__image-preview"></div>
+              </div>
+            </div>
+            <div
+              *ngIf="this.incidenciaSeleccionada && incidenciaSeleccionada.urlListOfPhotos && (incidenciaSeleccionada.urlListOfPhotos | filterName | async).length>0">
+              <ng-container *ngTemplateOutlet="templateFotos;context:{fotos:incidenciaSeleccionada.urlListOfPhotos}">
+
+              </ng-container>
+            </div>
+          </div>
+          <div class="field"><label class="label">Impacto</label></div>
+          <div class="select ">
+            <select formControlName="tipoIncidencia" [compareWith]="compareTipoIncidencia">
+              <option [ngValue]="tipoIncidenica" *ngFor="let tipoIncidenica of (listaTipoIncidencias | async )">
+                {{tipoIncidenica.tipo}}</option>
+            </select>
+          </div>
+          <footer class="modal-card-foot ">
+            <button type="submit " [disabled]="!this.incidenciaForm.valid " class="button is-success ">
+              {{accion? 'Guardar':'Editar'}}
+            </button>
+            <a class="button " (click)="toggleFormIncidencia() ">Cancelar</a>
+          </footer>
+        </form>
+      </section>
+    </div>
+  </div>
+  <form class="row around-xs middle-xs margin_formulario_filtrado" [formGroup]="filtroIncidenciaForm"
+    (submit)="consultarFiltroIncidenciaDate(filtroIncidenciaForm.value)">
+    <div class="field is-horizontal  col-xs-12 col-md-4">
+      <div class="field-label is-normal">
+        <label for="fecha_registro" class="label">Fecha:</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <input type="date" id="fecha_registro" formControlName="fecha_registro" class="input">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="field is-horizontal col-xs-12 col-md-4">
+      <div class="field-label is-normal">
+        <label for="" class="label">Categoria:</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <div class="select">
+              <select name="" id="categoria" formControlName="categoria">
+                <option value="todos">Todos</option>
+                <option [ngValue]="tipoIncidenica" *ngFor="let tipoIncidenica of (listaTipoIncidencias | async )">
+                  {{tipoIncidenica.tipo}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class=" button is-primary" [disabled]="!filtroIncidenciaForm.valid">Consultar</button>
+  </form>
+
+  <!--mostrar lista de incidencias sucedidas-->
+  <div class="row around-xs">
+    <div class="col-xs-12 col-md-4 margin_25"
+      *ngFor="let incidencia of (listaIncidencia | async) |  paginate:{itemsPerPage:6,currentPage:actualPagina}">
+      <div class="card">
+        <header class="card-header">
+          <div class="card-header-title ">
+            <span class="has-text-dark">
+              {{ incidencia.fecha_registro.toDate() | date:'mediumDate' }}
+            </span>
+            <div class="position_absolute right padding_2  border_radius_10">
+              <a class="">
+                <span class="icon is-large ">
+                  <i class="material-icons" style="font-size: 2rem "
+                    [ngStyle]="{'color':incidencia.tipoIncidencia.color}">report</i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </header>
+        <div class="card-content ">
+          <div> <span class="has-text-dark">
+              {{ incidencia.detalle }}
+            </span>
+          </div>
+        </div>
+        <footer class="card-footer ">
+          <a (click)="setIncidencia(incidencia);toggleModalIncidencia()" class="card-footer-item "><i
+              class="material-icons">
+              account_circle
+            </i></a>
+          <a (click)="setIncidencia(incidencia);editIncidencia();clearPreventView();toggleFormIncidencia()"
+            class="card-footer-item "><i class="fas fa-edit">
+            </i></a>
+          <a (click)="setIncidencia(incidencia);eliminarIncidencia()" class="card-footer-item "><i
+              class="fas fa-trash-alt" style="color:red">
+            </i></a>
+        </footer>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-4  col-md-offset-8">
+      <pagination-controls class="pgination" (pageChange)="actualPagina = $event" responsibe="true"
+        screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+  </div>
+  <!--FIN modal vista incidencia-->
+  <!--modalVistaPersonalReporteIncidencias-->
+
+
+  <div class="modal " [ngClass]="{ 'is-active':activarModalIncidencia} ">
+    <div class="modal-background " (click)="toggleModalIncidencia() "></div>
+    <div class="modal-card ">
+      <header class="modal-card-head ">
+        <p class="modal-card-title ">Persona Responsable</p>
+        <button class="delete " aria-label="close " (click)="toggleModalIncidencia() "></button>
+      </header>
+      <section class="modal-card-body " *ngIf="incidenciaSeleccionada">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombres</th>
+              <th>Apellidos</th>
+              <th>Cargo</th>
+              <th>Área</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{incidenciaSeleccionada.persona.nombre}}</td>
+              <td>{{incidenciaSeleccionada.persona.apellidos}}</td>
+              <td>{{incidenciaSeleccionada.persona.gerencia.nombre}}</td>
+              <td>{{incidenciaSeleccionada.persona.area.area}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </section>
+      <footer class="modal-card-foot ">
+        <button class="button " (click)="toggleModalIncidencia() ">Cancelar</button>
+      </footer>
+    </div>
+  </div>
+
+
+
+
+</block-ui>
+<ng-template #templateFotos let-arrayFotos="fotos">
+  <article class="message is-info">
+    <div class="message-header">
+      <p>Lista de Fotos</p>
+    </div>
+    <div class="message-body">
+      <div class="display_flex">
+        <figure class="image is-128x128 " *ngFor="let foto of (arrayFotos | filterName) | async;let i=index">
+          <div class="display_flex position_absolute right padding_2">
+            <a class="delete" (click)="deleteImagenIncidencia(foto)" aria-label="delete"></a>
+            <a>
+              <i class="fas fa-download"></i>
+            </a>
+
+          </div>
+          <img [src]="foto.url" class="" [alt]="foto.name">
+        </figure>
+      </div>
+    </div>
+  </article>
+</ng-template>

@@ -1,0 +1,80 @@
+agm-map{
+     height: 90%;
+}
+
+.legend {
+     opacity: .8;
+     font-family: Arial, sans-serif;
+     background: #fff;
+     padding: 2%;
+     margin-left: 2%;
+     border: 1px solid green;
+     position: absolute;
+     bottom: 30px;
+     left: 0px;
+     
+}
+.legendTest{
+     margin-left: 2%;
+     position: absolute;
+     bottom: 30px;
+     left: 0px;
+}
+.legend button{
+     line-height: 12px; 
+     width: 18px; 
+     font-size: 8pt; 
+     font-family: tahoma; 
+     margin-top: 1px; 
+     margin-right: 2px; 
+     position:absolute; 
+     top:0; 
+     right:0; 
+}
+
+.legend ul li{
+     line-height: 12px;
+  font-size: .9rem;
+     color: #000;
+     display: flex;
+     align-items: center;
+}
+.color_celeste{
+     color: skyblue;
+}
+.color_rojo{
+ color: red;
+}
+.color_marron{
+     color: brown;
+}
+.color_azul{
+     color: blue;
+}
+.color_amarillo{
+     color: yellow;
+}
+
+.color_negro{
+ color: black;    
+}
+.color_gray{
+     color: gray;
+}
+#titulo h3{
+     margin-top: 0;
+     text-align: center;
+     font-weight: bold;
+     color: black;
+}
+  
+.boton{
+     text-align: center;
+     border-radius: 25px 25px 25px 25px;
+     background: #00f;
+     font-family: Verdana, Geneva, Tahoma, sans-serif;
+     background-color:  #00f;
+     color:  #00f;
+
+}
+

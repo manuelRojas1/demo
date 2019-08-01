@@ -1,0 +1,241 @@
+/* You can add global styles to this file, and also import other style files */
+.materialboxed {
+  display: block;
+  cursor: -webkit-zoom-in;
+  cursor: zoom-in;
+  position: relative;
+  -webkit-transition: opacity .4s;
+  transition: opacity .4s;
+  -webkit-backface-visibility: hidden;
+}
+.materialboxed:hover:not(.active) {
+  opacity: .8;
+}
+.materialboxed.active {
+  cursor: -webkit-zoom-out;
+  cursor: zoom-out;
+}
+.carousel.scrolling .carousel-item .materialboxed,
+.carousel .carousel-item:not(.active) .materialboxed {
+  pointer-events: none;
+}
+
+.main-container{
+  margin-top: 40px;
+  margin-bottom: 150px;
+}
+
+.puntero{
+  cursor: pointer;
+}
+*{
+  font-family:  verdana, Helvetica, sans-serif;
+  font-size: 16px;
+
+}
+.icon_mediano{
+  font-size: 4rem;
+}
+.icon_small{
+  font-size: 2rem;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.chat-window{
+  padding: 10px;
+  width: 300px;
+  height: 400px;
+  overflow: hidden;
+  border: 1px solid #4080FF;
+  border-radius: 20px;
+}
+.displax_block{
+display: block;
+}
+.width_15_percent
+{
+  width: 15%;
+}
+.animation_slideShow{
+  display: block !important;
+  animation-name: slideShow;
+}
+.display_none{
+  display: none !important;
+}
+.display_flex{
+  display: flex !important;
+flex-wrap: wrap;
+justify-content: space-around;
+
+}
+.items_flex_50{
+  flex-basis: 50%;
+}
+.app-mensajes{
+  overflow-y:scroll;
+  height:270px;
+  padding: 5px;
+}
+@keyframes slideShow{
+from{
+  display: none;
+}
+to{
+  display: block !important;
+}
+}
+
+.body{
+  display: none;
+}
+.animacion_slide{
+
+  animation-iteration-count: 1;
+  animation-name: slideShow;
+  animation-duration: 1.5s;
+}
+
+
+.ul{
+  font-family: Times New Roman;
+  color: #050505;
+
+
+}
+.font_weigh_none{
+  font-weight: normal;
+}
+.width_50_percent{
+  width: 50%
+}
+.width_70_percent{
+  width: 70%;
+}
+.width_100_percent{
+  width: 100%;
+}
+.li{
+  text-align: center;
+  background: #eee9e9;
+  margin: 0 0 8px;
+  padding: 3px 10px;
+}
+li:hover{
+  cursor: pointer;
+}
+.center_text{
+  text-align: center;
+}
+.border_top_left_radius{
+
+  border-top-left-radius: 6px;
+}
+.border_top_right_radius{
+  border-top-right-radius: 6px;
+}
+.text_title{
+  font-family: Cambria;
+  color:white;
+  font-size: 18px;
+  padding: 3px 10px;
+}
+.margin_bottom_5rem{
+  margin-bottom: .5rem;
+
+}
+.pgination /deep/.ngx-pagination .current{
+  background: red;
+}
+.ng-valid:not(form):not(div), .ng-valid.required  {
+  border-left: 5px solid #42A948; /* green */
+}
+.ng-invalid:not(form):not(div)  {
+  border-left: 5px solid #a94442; /* red */
+}
+/* Animaciones */
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.fast {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+.position_relative{
+  position: relative;
+}
+.disabled{
+  pointer-events: none;
+  opacity: .5;
+}
+.position_absolute{
+  position:absolute;
+}
+.margin_button_75{
+  margin-bottom: 0.75rem;
+}
+.right{
+  right: 0;
+}
+.padding_2{
+  padding: 2px;
+}
+.padding_05rem{
+  padding: .5rem;
+}
+.border_radius_10{
+border-radius: 10px;
+border-style: solid;
+border-color: transparent
+}
+
+.box_shadow{
+  box-shadow: 5px 5px 5px 2px rgba(0,0,0,0.75)
+}
+.border_radius_50{
+  border-radius: 50%;
+}
+.height_24{
+  height: 24px;
+}
+.top{
+  top:0;
+}
+.padding_10{
+  padding: 10px;
+}
+.fadeIn {
+  animation-name: fadeIn;
+}
+*{
+  box-sizing: border-box;
+}
+.border{
+  border-color: cornsilk;
+  border-style: solid;
+}
+.margin_25{
+  margin-top: 5%;
+}
+.margin_formulario_filtrado{
+  margin-top:.7rem;
+}
